@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stack de CDs — v6</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="viewport">
+    <header class="topbar">
+      <a class="about-link" href="about.html">about</a>
+      <div class="sort">
+        <label for="sortSel">ordenar:</label>
+        <select id="sortSel" aria-label="Ordenar">
+          <option value="default">por defecto</option>
+          <option value="alpha">alfabético</option>
+          <option value="year">por fecha</option>
+        </select>
+      </div>
+    </header>
+    <section id="scrollHost" class="scroll-host" aria-live="polite">
+      <section id="cdStack" class="cd-stack"></section>
+    </section>
+  </main>
+
+  <template id="cdTemplate">
+    <a class="cd" role="button" tabindex="0" aria-label="CD">
+      <div class="bg"></div>
+      <img class="label-img" alt="" />
+    </a>
+  </template>
+
+  <script src="main.js"></script>
+</body>
+</html>

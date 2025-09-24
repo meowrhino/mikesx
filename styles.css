@@ -1,0 +1,227 @@
+/* v6: mobile-first, header fijo dentro del 'móvil', stack centrado en desktop,
+   scroll infinito, sin overscroll arriba, y páginas de proyecto/about. */
+:root {
+  --bg: #141414;
+  --ink: #e7e7e7;
+  --muted: #a0a0a0;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+/* Evita elastic overscroll del documento */
+html,
+body {
+  overscroll-behavior-y: none;
+}
+body {
+  margin: 0;
+  background: #0f0f0f;
+  color: var(--ink);
+}
+
+/* Marco 'móvil' */
+.viewport {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: #0f0f0f;
+}
+/* Stack centrado en desktop */
+.scroll-host {
+  width: 100dvw;
+  max-width: 100dvw;
+  height: calc(100dvh - 48px); /* topbar reduce altura disponible */
+  overflow-y: auto;
+  overscroll-behavior: contain; /* no mostrar fondo por encima */
+  background: var(--bg);
+  /* bordes sutiles como móvil */
+  box-shadow: 0 0 0 1px #000 inset;
+}
+@media (min-width: 900px) {
+  .scroll-host {
+    width: clamp(320px, 48vw, 560px);
+    max-width: 560px;
+    height: calc(100dvh - 56px);
+
+  }
+}
+
+/* Header fijo dentro del marco */
+.topbar {
+  position: sticky;
+  top: 0;
+  width: clamp(320px, 100dvw, 560px);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  color: #ddd;
+  background: linear-gradient(180deg, #111 0%, #111d 70%, transparent 100%);
+  backdrop-filter: blur(3px);
+  z-index: 10;
+}
+@media (min-width: 900px) {
+  .topbar {
+    width: clamp(320px, 48vw, 560px);
+    height: 56px;
+  }
+}
+.topbar a {
+  color: #fff;
+  text-decoration: none;
+}
+.topbar .about-link {
+  text-transform: lowercase;
+}
+.sort {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.sort label {
+  font-size: 0.85rem;
+  color: #bbb;
+}
+.sort select {
+  background: #1f1f1f;
+  color: #eee;
+  border: 1px solid #333;  padding: 6px 8px;
+}
+
+/* Stack - sin gaps */
+.cd-stack {
+  margin: 0;
+  padding: 0;
+}
+.cd {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 5dvh;
+  overflow: hidden;
+  text-decoration: none;
+}
+.cd .bg {
+  position: absolute;
+  inset: 0;
+  background: #d6d6d6;
+}
+.cd[data-type="filler"] {
+  height: 6dvh;
+} /* relleno un poco más alto */
+.cd[data-type="filler"] .bg {
+  background: repeating-linear-gradient(
+    180deg,
+    #dcdcdc,
+    #dcdcdc 2px,
+    #cfcfcf 2px,
+    #cfcfcf 8px
+  );
+}
+.cd[data-type="real"] .bg {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.label-img {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  max-height: 80%;
+  max-width: 90%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: none;
+  filter: drop-shadow(0 2px 3px #0009);
+}
+.cd[data-type="real"] .label-img {
+  display: block;
+}
+.cd:focus-visible {
+  outline: 2px solid #ffffff44;
+  outline-offset: -2px;
+}
+
+/* Proyecto (detalle) */
+.viewport.project .project-stage {
+  width: 100dvw;
+  max-width: 100dvw;
+  height: calc(100dvh - 48px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  position: relative;
+  background: #000; /* se sustituye por bg cover */
+}
+@media (min-width: 900px) {
+  .viewport.project .project-stage {
+    width: clamp(320px, 48vw, 560px);
+    max-width: 560px;
+    height: calc(100dvh - 56px);
+
+    box-shadow: 0 0 0 1px #000 inset;
+  }
+}
+.project-stage {
+  display: grid;
+  place-items: center;
+}
+.project-card {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  width: 100%;
+  grid-template-rows: auto auto;
+  place-items: center;
+}
+.cover {
+  width: min(88%, 420px);
+  height: auto;
+  object-fit: contain;
+  background: #111;
+  border: 1px solid #333;
+}
+.project-meta {
+  text-align: center;
+  width: min(92%, 520px);
+}
+.muted {
+  color: var(--muted);
+}
+.back {
+  text-decoration: none;
+  color: #fff;
+}
+
+/* About */
+.about .about-stage {
+  width: 100dvw;
+  max-width: 100dvw;
+  height: calc(100dvh - 48px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: #111;
+  padding: 14px;
+}
+@media (min-width: 900px) {
+  .about .about-stage {
+    width: clamp(320px, 48vw, 560px);
+    max-width: 560px;
+    height: calc(100dvh - 56px);
+
+    box-shadow: 0 0 0 1px #000 inset;
+  }
+}
+.about-card {
+  max-width: 52ch;
+  margin: 30px auto;
+  color: #ddd;
+  line-height: 1.5;
+}
