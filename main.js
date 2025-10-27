@@ -32,12 +32,14 @@ function normalizeItem(it, idx) {
     title: it.title || "",
     label: it.label || "",
     src: it.src || "",
+    artist: it.artist || it.artist || "",
+    cover: it.cover || it.coverLink || it.cover_url || "",
   };
 }
 function onSortChange() {
   const v = sortSel ? sortSel.value : "default";
   if (v === "alpha") {
-    order = [...manifest].sort((a, b) => a.title.localeCompare(b.title));
+    order = [...manifest].sort((a, b) => (a.artist || a.title).localeCompare((b.artist || b.title), undefined, { sensitivity: "base" }));
   }
   // Ya no ordenamos por año, solo por defecto o alfabético
   else {
@@ -81,8 +83,12 @@ function makeCD(item) {
   const img = node.querySelector ? node.querySelector(".label-img") : null;
   if (img && item.label) {
     img.src = item.label;
-    img.alt = item.title || "";
+    img.alt = (item.artist ? (item.artist + " — ") : "") + (item.title || "");
     img.loading = "lazy";
+
+    // Persist cover and artist as data attributes for future use
+    if (item.cover) node.dataset.cover = item.cover;
+    if (item.artist) node.dataset.artist = item.artist;
 
     // Cuando la imagen cargue, usa su tamaño natural para fijar proporción y ancho natural
     const applySize = () => {
@@ -103,7 +109,7 @@ function makeCD(item) {
 
   // Enlace a proyecto
   node.href = `proyecto.html?id=${encodeURIComponent(item.id)}`;
-  node.setAttribute("aria-label", item.title || item.id || "proyecto");
+  node.setAttribute("aria-label", (item.artist ? (item.artist + " — ") : "") + (item.title || item.id || "proyecto"));
   return node;
 }
 async function fetchJSON(url) {

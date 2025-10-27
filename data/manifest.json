@@ -3,13 +3,17 @@
     {
       "id": "777",
       "title": "777",
+      "artist": "LASKAAR",
       "label": "data/img/777/777_lateral.jpg",
+      "cover": "data/img/777/777_cover.jpg",
       "src": "data/777.json"
     },
     {
       "id": "bb",
       "title": "bb",
+      "artist": "LASKAAR",
       "label": "data/img/bb/bb_lateral.jpg",
+      "cover": "data/img/bb/bb_cover.jpg",
       "src": "data/bb.json"
     }
   ]
