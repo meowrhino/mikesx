@@ -1,49 +1,10 @@
 {
   "items": [
     {
-      "id": "u1",
-      "title": "Unfunny Curator (EP)",
-      "year": 2024,
-      "hasContent": true,
-      "bg": "data/img/bg_unfunny.png",
-      "label": "data/img/label_unfunny.png",
-      "cover": "data/img/cover_unfunny.png",
-      "src": "data/album-unfunny.json"
-    },
-    {
-      "id": "f1",
-      "title": "Filler 1",
-      "hasContent": false
-    },
-    {
-      "id": "c1",
-      "title": "Loops & Clouds",
-      "year": 2025,
-      "hasContent": true,
-      "bg": "data/img/bg_clouds.png",
-      "label": "data/img/label_clouds.png",
-      "cover": "data/img/cover_clouds.png",
-      "src": "data/album-clouds.json"
-    },
-    {
-      "id": "f2",
-      "title": "Filler 2",
-      "hasContent": false
-    },
-    {
-      "id": "f3",
-      "title": "Filler 3",
-      "hasContent": false
-    },
-    {
-      "id": "f4",
-      "title": "Filler 4",
-      "hasContent": false
-    },
-    {
-      "id": "f5",
-      "title": "Filler 5",
-      "hasContent": false
+      "id": "777",
+      "title": "777 - laskaar",
+      "label": "data/img/777/777_lateral.jpg",
+      "src": "data/777.json"
     }
   ]
 }
