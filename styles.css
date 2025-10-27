@@ -230,3 +230,66 @@ body {
   color: #ddd;
   line-height: 1.5;
 }
+
+
+
+/* --- ESTILOS AÑADIDOS PARA EL PROYECTO --- */
+
+/* Tipografías */
+h1#pTitle,
+p#pArtist,
+p#pYear {
+  font-family: 'Michroma', sans-serif;
+  text-transform: uppercase;
+}
+
+p#pDesc {
+  font-family: 'Saira', sans-serif;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* Scroll Lateral de Imágenes */
+.image-gallery {
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding-bottom: 10px; /* Espacio para la barra de scroll si aparece */
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; /* Mejora el scroll en iOS */
+}
+
+.gallery-image {
+  height: auto;
+  width: 80vw; /* Ajustar el tamaño de la imagen para que sea visible en mobile-first */
+  max-width: 400px;
+  object-fit: contain;
+  display: inline-block;
+  margin: 0 5px;
+  scroll-snap-align: center;
+}
+
+/* Centrar la primera imagen (cover) */
+.image-gallery {
+  /* Usamos padding-left para centrar la primera imagen en el scroll */
+  padding-left: 10vw; /* 50% del viewport - 40vw (la mitad del ancho de la imagen) */
+  padding-right: 10vw;
+}
+
+@media (min-width: 900px) {
+  .gallery-image {
+    width: 400px; /* Tamaño fijo en desktop */
+  }
+  .image-gallery {
+    /* 50% del ancho del contenedor del proyecto (max 560px) - 200px (la mitad del ancho de la imagen) */
+    padding-left: calc(50% - 200px);
+    padding-right: calc(50% - 200px);
+  }
+}
+
+/* Eliminar el estilo .cover que ya no se usa */
+.cover {
+  display: none;
+}
+

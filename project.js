@@ -27,7 +27,21 @@ async function init() {
   document.getElementById("pArtist").textContent = data.artist || "";
   document.getElementById("pYear").textContent = data.year || "";
   document.getElementById("pDesc").textContent = data.description || "";
-  const cover = document.getElementById("coverImg");
-  cover.src = data.cover || item.cover || item.label || "";
-  cover.alt = data.title || "";
+
+  // Lógica para la galería de imágenes con scroll lateral
+  const gallery = document.getElementById("imageGallery");
+  const images = data.images || [];
+
+  if (images.length > 0) {
+    images.forEach((src, index) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = `${data.title || 'Proyecto'} - Imagen ${index + 1}`;
+      img.classList.add('gallery-image');
+      if (index === 0) {
+        img.classList.add('cover-image'); // Para centrar la primera imagen
+      }
+      gallery.appendChild(img);
+    });
+  }
 }
