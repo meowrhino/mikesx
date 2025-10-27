@@ -16,7 +16,7 @@ init().catch((err) => {
   }
 });
 async function init() {
-  const m = await fetchJSON("data/manifest.json");
+  const m = await fetchJSON("manifest.json");
   manifest = (m.items || []).map((it, idx) => normalizeItem(it, idx));
   order = [...manifest];
   fillInitial();

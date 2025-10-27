@@ -39,7 +39,7 @@ body {
 .scroll-host {
   width: 100dvw;
   max-width: 100dvw;
-  height: calc(100dvh - var(--topbar-h));
+  /* height: calc(100dvh - var(--topbar-h)); */
   overflow-y: auto;
   overscroll-behavior: contain; /* no mostrar fondo por encima */
   background: var(--bg);
@@ -130,7 +130,7 @@ body {
 .viewport.project .project-stage {
   width: 100dvw;
   max-width: 100dvw;
-  height: calc(100dvh - 48px);
+  /* height: calc(100dvh - 48px); */
   overflow: auto;
   overscroll-behavior: contain;
   position: relative;
@@ -140,7 +140,7 @@ body {
   .viewport.project .project-stage {
     width: clamp(320px, 48vw, 560px);
     max-width: 560px;
-    height: calc(100dvh - 56px);
+    /* height: calc(100dvh - 56px); */
 
     box-shadow: 0 0 0 1px #000 inset;
   }
@@ -180,7 +180,7 @@ body {
 .about .about-stage {
   width: 100dvw;
   max-width: 100dvw;
-  height: calc(100dvh - 48px);
+  /* height: calc(100dvh - 48px); */
   overflow: auto;
   overscroll-behavior: contain;
   background: #000;

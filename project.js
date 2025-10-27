@@ -2,7 +2,7 @@ init();
 async function init() {
   const params = new URLSearchParams(location.search);
   const id = params.get("id");
-  const m = await (await fetch("data/manifest.json")).json();
+  const m = await (await fetch("manifest.json")).json();
   const items = m.items || [];
   let item = items.find((it) => String(it.id ?? "") === String(id));
   
