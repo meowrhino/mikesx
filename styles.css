@@ -37,28 +37,6 @@ body {
   background: #000;
 }
 
-/* Header fijo dentro del marco (si existe) */
-/* .topbar {
-  position: sticky;
-  top: 0;
-  width: clamp(320px, 100dvw, 560px);
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10px;
-  color: #ddd;
-  background: linear-gradient(180deg, #111 0%, #111d 70%, transparent 100%);
-  backdrop-filter: blur(3px);
-  z-index: 10;
-}
-.topbar a {
-  color: #fff;
-  text-decoration: none;
-}
-.topbar .about-link {
-  text-transform: lowercase;
-} */
 .sort {
   display: flex;
   align-items: center;
@@ -170,11 +148,6 @@ body {
 /* .cover {
   display: none;
 }
-
-
-.muted {
-  color: var(--muted);
-}
 .back {
   text-decoration: none;
   color: #fff;
@@ -244,6 +217,30 @@ p#pDesc {
   width: min(92%, 520px);
 }
 
+/* --- Botón Back -------------------------------------------------- */
+.back-btn {
+  font-family: "Michroma", sans-serif;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 20px 16px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0.3; }
+}
+
+.back-btn:hover {
+  animation: blink 0.8s linear infinite;
+}
+
 /* --- Galería lateral -------------------------------------------- */
 .image-gallery {
   width: 100%;
@@ -280,3 +277,5 @@ p#pDesc {
 
 /* --- Utils ------------------------------------------------------- */
 /* (vacío de momento) */
+
+

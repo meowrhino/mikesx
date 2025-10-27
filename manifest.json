@@ -6,7 +6,7 @@
       "artist": "LASKAAR",
       "label": "data/img/777/777_lateral.jpg",
       "cover": "data/img/777/777_cover.jpg",
-      "src": "data/777.json"
+      "src": "data/json/777.json"
     },
     {
       "id": "bb",
@@ -14,7 +14,7 @@
       "artist": "LASKAAR",
       "label": "data/img/bb/bb_lateral.jpg",
       "cover": "data/img/bb/bb_cover.jpg",
-      "src": "data/bb.json"
+      "src": "data/json/bb.json"
     },
     {
       "id": "anela",
@@ -22,7 +22,7 @@
       "artist": "belen aguilera",
       "label": "data/img/anela/anela_lateral.jpg",
       "cover": "data/img/anela/anela_cover.jpg",
-      "src": "data/anela.json"
+      "src": "data/json/anela.json"
     },
     {
       "id": "gasolina",
@@ -30,7 +30,7 @@
       "artist": "bajocero x",
       "label": "data/img/gasolina/gasolina_lateral.jpg",
       "cover": "data/img/gasolina/gasolina_cover.jpg",
-      "src": "data/gasolina.json"
+      "src": "data/json/gasolina.json"
     },
     {
       "id": "manners",
@@ -38,7 +38,7 @@
       "artist": "bajocero x",
       "label": "data/img/manners/manners_lateral.jpg",
       "cover": "data/img/manners/manners_cover.jpg",
-      "src": "data/manners.json"
+      "src": "data/json/manners.json"
     },
     {
       "id": "mikesx",
@@ -46,7 +46,7 @@
       "artist": "bajocero x",
       "label": "data/img/mikesx/mikesx_lateral.jpg",
       "cover": "data/img/mikesx/mikesx_cover.jpg",
-      "src": "data/mikesx.json"
+      "src": "data/json/mikesx.json"
     },
     {
       "id": "noTengoBateria",
@@ -54,7 +54,7 @@
       "artist": "LASKAAR",
       "label": "data/img/noTengoBateria/noTengoBateria_lateral.jpg",
       "cover": "data/img/noTengoBateria/noTengoBateria_cover.jpg",
-      "src": "data/noTengoBateria.json"
+      "src": "data/json/noTengoBateria.json"
     },
     {
       "id": "munyekeo",
@@ -62,7 +62,7 @@
       "artist": "LASKAAR",
       "label": "data/img/munyekeo/munyekeo_lateral.jpg",
       "cover": "data/img/munyekeo/munyekeo_cover.jpg",
-      "src": "data/munyekeo.json"
+      "src": "data/json/munyekeo.json"
     },
     {
       "id": "todaLaNoche",
@@ -70,7 +70,7 @@
       "artist": "RAOUL",
       "label": "data/img/todaLaNoche/todaLaNoche_lateral.jpg",
       "cover": "data/img/todaLaNoche/todaLaNoche_cover.jpg",
-      "src": "data/todaLaNoche.json"
+      "src": "data/json/todaLaNoche.json"
     },
     {
       "id": "celoso",
@@ -78,7 +78,7 @@
       "artist": "mikesx",
       "label": "data/img/celoso/celoso_lateral.jpg",
       "cover": "data/img/celoso/celoso_cover.jpg",
-      "src": "data/celoso.json"
+      "src": "data/json/celoso.json"
     }
   ]
 }
