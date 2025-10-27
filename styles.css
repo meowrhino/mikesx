@@ -5,10 +5,6 @@
 :root {
   --bg: #000;
   --ink: #e7e7e7;
-  --muted: #a0a0a0;
-  --cd-filler-h: clamp(48px, 6svh, 84px);
-  --cd-row-h: clamp(110px, 14svh, 180px);
-  --topbar-h: 48px; /* usado solo si hay .topbar en el DOM */
 }
 
 /* --- Reset & base ------------------------------------------------ */
@@ -42,7 +38,7 @@ body {
 }
 
 /* Header fijo dentro del marco (si existe) */
-.topbar {
+/* .topbar {
   position: sticky;
   top: 0;
   width: clamp(320px, 100dvw, 560px);
@@ -62,7 +58,7 @@ body {
 }
 .topbar .about-link {
   text-transform: lowercase;
-}
+} */
 .sort {
   display: flex;
   align-items: center;
@@ -95,13 +91,10 @@ body {
     width: clamp(320px, 48vw, 560px);
     max-width: 560px;
   }
-  .topbar {
+  /* .topbar {
     width: clamp(320px, 48vw, 560px);
     height: 56px;
-  }
-  :root {
-    --cd-row-h: clamp(140px, 18svh, 220px);
-  }
+  } */
 }
 
 /* --- Listado CDs ------------------------------------------------- */
@@ -142,7 +135,9 @@ body {
   width: 100dvw;
   max-width: 100dvw;
   flex: 1 1 auto; /* 👈 llena el resto, igual que .scroll-host */
-  overflow: auto;
+  /* Evita scroll lateral fantasma del blur */
+  overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   position: relative;
   background: #000;
@@ -158,6 +153,11 @@ body {
   display: grid;
   place-items: center;
 }
+/* La antigua .cover ya no se usa para la galería, evitamos conflictos */
+.cover {
+  display: none;
+}
+
 .project-card {
   display: grid;
   gap: 12px;
@@ -167,21 +167,18 @@ body {
   place-items: center;
 }
 /* La antigua .cover ya no se usa para la galería, evitamos conflictos */
-.cover {
+/* .cover {
   display: none;
 }
 
-.project-meta {
-  text-align: center;
-  width: min(92%, 520px);
-}
+
 .muted {
   color: var(--muted);
 }
 .back {
   text-decoration: none;
   color: #fff;
-}
+} */
 
 /* Tipografías del detalle */
 h1#pTitle,
@@ -201,7 +198,6 @@ p#pDesc {
   position: relative; /* ya lo tienes en desktop; lo reafirmamos para mobile */
   isolation: isolate; /* asegura que los pseudo no sangren fuera */
   overflow: hidden; /* evita scroll lateral/vertical extra del blur */
-
 }
 
 /* Capas de fondo */
@@ -216,9 +212,9 @@ p#pDesc {
 
 /* Imagen blur */
 .project-stage::before {
-  inset: -24px;
+  inset: 0;
   background: center / cover no-repeat var(--stage-bg, none);
-  filter: blur(14px);
+  filter: blur(24px);
   will-change: filter;
 }
 
@@ -226,18 +222,26 @@ p#pDesc {
 .project-stage::after {
   content: "";
   position: absolute;
-  inset: -24px; /* 👈 cubre lo mismo que el blur, sin provocar scroll */
+  inset: 0;
   pointer-events: none;
   z-index: 0;
-  background:
-    radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,0.1), transparent 60%),
-    linear-gradient(180deg, rgba(0,0,0,0.30), rgba(0,0,0,0.50));
+  background: radial-gradient(
+      80% 60% at 50% 40%,
+      rgba(0, 0, 0, 0.1),
+      transparent 60%
+    ),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
 }
 
 /* Asegura que el contenido esté por encima de las capas de fondo */
 .project-card {
   position: relative;
   z-index: 1;
+}
+
+.project-meta {
+  text-align: center;
+  width: min(92%, 520px);
 }
 
 /* --- Galería lateral -------------------------------------------- */

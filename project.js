@@ -28,7 +28,12 @@ async function init() {
 
 // Stage + fondo blur con la 1ª imagen de la galería (fallback: data.bg)
 const stage = document.getElementById("projectStage");
-const images = Array.isArray(data.images) ? data.images : [];
+
+// Normalizamos la lista de imágenes (quitamos falsy/strings vacíos)
+const images = (Array.isArray(data.images) ? data.images : [])
+  .map(s => typeof s === "string" ? s.trim() : s)
+  .filter(Boolean);
+
 const coverSrc = images[0] || data.bg || null;
 if (coverSrc) {
   stage.style.setProperty('--stage-bg', `url("${coverSrc}")`);
@@ -42,16 +47,19 @@ document.getElementById("pDesc").textContent = data.description || "";
 // Lógica para la galería de imágenes con scroll lateral
 const gallery = document.getElementById("imageGallery");
 
-  if (images.length > 0) {
-    images.forEach((src, index) => {
-      const img = document.createElement('img');
-      img.src = src;
-      img.alt = `${data.title || 'Proyecto'} - Imagen ${index + 1}`;
-      img.classList.add('gallery-image');
-      if (index === 0) {
-        img.classList.add('cover-image'); // Para centrar la primera imagen
-      }
-      gallery.appendChild(img);
-    });
-  }
+if (images.length > 0) {
+  images.forEach((src, index) => {
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = `${data.title || 'Proyecto'} - Imagen ${index + 1}`;
+    img.classList.add('gallery-image');
+    if (index === 0) {
+      img.classList.add('cover-image'); // Para centrar la primera imagen
+    }
+    gallery.appendChild(img);
+  });
+} else {
+  // Ocultamos el contenedor si no hay imágenes
+  gallery.style.display = "none";
+}
 }
