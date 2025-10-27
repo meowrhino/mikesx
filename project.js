@@ -26,20 +26,21 @@ async function init() {
     data = item;
   }
 
-  // Set background of stage (ahora el bg está en el JSON de detalle)
-  const stage = document.getElementById("projectStage");
-  if (data.bg) {
-    stage.style.background = `center / cover no-repeat url(${data.bg})`;
-  }
-  document.getElementById("pTitle").textContent =
-    data.title || "Sin título";
-  document.getElementById("pArtist").textContent = data.artist || "";
-  document.getElementById("pYear").textContent = data.year || "";
-  document.getElementById("pDesc").textContent = data.description || "";
+// Stage + fondo blur con la 1ª imagen de la galería (fallback: data.bg)
+const stage = document.getElementById("projectStage");
+const images = Array.isArray(data.images) ? data.images : [];
+const coverSrc = images[0] || data.bg || null;
+if (coverSrc) {
+  stage.style.setProperty('--stage-bg', `url("${coverSrc}")`);
+}
 
-  // Lógica para la galería de imágenes con scroll lateral
-  const gallery = document.getElementById("imageGallery");
-  const images = data.images || [];
+document.getElementById("pTitle").textContent = data.title || "Sin título";
+document.getElementById("pArtist").textContent = data.artist || "";
+document.getElementById("pYear").textContent = data.year || "";
+document.getElementById("pDesc").textContent = data.description || "";
+
+// Lógica para la galería de imágenes con scroll lateral
+const gallery = document.getElementById("imageGallery");
 
   if (images.length > 0) {
     images.forEach((src, index) => {

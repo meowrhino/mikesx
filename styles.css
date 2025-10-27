@@ -147,9 +147,9 @@ body {
   position: relative;
   background: #000;
 }
-@media (min-width: 900px) {
+@media (min-width: 600px) {
   .viewport.project .project-stage {
-    width: clamp(320px, 48vw, 560px);
+    /* width: clamp(320px, 48vw, 560px); */
     max-width: 560px;
     box-shadow: 0 0 0 1px #000 inset;
   }
@@ -194,6 +194,50 @@ p#pDesc {
   font-family: "Saira", sans-serif;
   font-weight: 300;
   line-height: 1.6;
+}
+
+/* Fondo blur tomado de --stage-bg (1ª imagen de la galería) */
+.project-stage {
+  position: relative; /* ya lo tienes en desktop; lo reafirmamos para mobile */
+  isolation: isolate; /* asegura que los pseudo no sangren fuera */
+  overflow: hidden; /* evita scroll lateral/vertical extra del blur */
+
+}
+
+/* Capas de fondo */
+.project-stage::before,
+.project-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Imagen blur */
+.project-stage::before {
+  inset: -24px;
+  background: center / cover no-repeat var(--stage-bg, none);
+  filter: blur(14px);
+  will-change: filter;
+}
+
+/* Oscurecido suave para legibilidad */
+.project-stage::after {
+  content: "";
+  position: absolute;
+  inset: -24px; /* 👈 cubre lo mismo que el blur, sin provocar scroll */
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,0.1), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,0.30), rgba(0,0,0,0.50));
+}
+
+/* Asegura que el contenido esté por encima de las capas de fondo */
+.project-card {
+  position: relative;
+  z-index: 1;
 }
 
 /* --- Galería lateral -------------------------------------------- */
