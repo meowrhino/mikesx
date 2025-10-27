@@ -5,7 +5,12 @@ const sortSel=document.getElementById('sortSel');
 let manifest=[], order=[], nextIndex=0;
 const CHUNK=10, THRESHOLD=0.2;
 
-init();
+init().catch(err => {
+  console.error('Fallo al inicializar:', err);
+  if (stack) {
+    stack.innerHTML = '<div class="cd-error">No se pudieron cargar los proyectos. Revisa la consola.</div>';
+  }
+});
 async function init(){
   const m=await fetchJSON('data/manifest.json');
   manifest=(m.items||[]).map((it,idx)=>normalizeItem(it, idx));
@@ -52,15 +57,45 @@ function appendChunk(n){
   }
 }
 function makeCD(item){
-  const node=tpl.content.firstElementChild.cloneNode(true);
-  // Eliminamos el dataset.type y la lógica de bg, ya que no hay 'filler' ni 'bg' en el manifest
-  const img=node.querySelector('.label-img');
-  if(item.label){ img.src=item.label; img.alt=item.title||''; }
-  else { img.removeAttribute('src'); }
-  // link to proyecto.html
+  const node = tpl && tpl.content ? tpl.content.firstElementChild.cloneNode(true) : document.createElement('a');
+  if (!node.classList.contains('cd')) node.classList.add('cd');
+  node.dataset.type = 'real';
+
+  // Imagen de la carátula
+  const img = node.querySelector ? node.querySelector('.label-img') : null;
+  if (img && item.label) {
+    img.src = item.label;
+    img.alt = item.title || '';
+    img.loading = 'lazy';
+
+    // Cuando la imagen cargue, usa su tamaño natural para fijar proporción y ancho natural
+    const applySize = () => {
+      const w = img.naturalWidth || 1400;
+      const h = img.naturalHeight || 300;
+      // CSS variables que gobiernan el layout (definidas en styles.css)
+      node.style.setProperty('--cd-natural-w', w + 'px');
+      node.style.setProperty('--cd-aspect', `${w} / ${h}`);
+      // Además lo aplicamos directo por compatibilidad
+      node.style.aspectRatio = `${w} / ${h}`;
+    };
+    if (img.complete) applySize(); else img.addEventListener('load', applySize, { once: true });
+  } else if (img) {
+    // Si no hay label, elimina la imagen para que no quede un placeholder roto
+    img.remove();
+  }
+
+  // Enlace a proyecto
   node.href = `proyecto.html?id=${encodeURIComponent(item.id)}`;
+  node.setAttribute('aria-label', item.title || item.id || 'proyecto');
   return node;
 }
 async function fetchJSON(url){
-  const res=await fetch(url); if(!res.ok) throw new Error(`HTTP ${res.status} ${url}`); return res.json();
+  const res = await fetch(url).catch(err => {
+    console.error('Fetch error:', err);
+    throw err;
+  });
+  if (!res || !res.ok) {
+    throw new Error(`HTTP ${res ? res.status : '—'} ${url}`);
+  }
+  return res.json();
 }

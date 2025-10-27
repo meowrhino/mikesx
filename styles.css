@@ -97,15 +97,14 @@ body {
 }
 
 /* Stack - sin gaps */
-.cd-stack {
-  margin: 0;
-  padding: 0;
-}
 .cd {
   position: relative;
   display: block;
-  width: 100%;
-  height: clamp(44px, 5svh, 72px);
+  /* En móvil ocupa 100%; en desktop no excede su ancho natural */
+  width: min(100%, var(--cd-natural-w, 1400px));
+  /* El alto lo gobierna la proporción natural de la imagen */
+  height: auto;
+  aspect-ratio: var(--cd-aspect, auto);
   overflow: hidden;
   text-decoration: none;
 }
@@ -138,17 +137,19 @@ body {
 .label-img {
   position: absolute;
   inset: 0;
-  margin: auto;
-  max-height: 80%;
-  max-width: 90%;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   display: none;
   filter: drop-shadow(0 2px 3px #0009);
 }
 .cd[data-type="real"] .label-img {
   display: block;
+}
+.cd [class*="label"],
+.cd [class*="cover"]{
+  height: auto !important;
+  min-height: 0 !important;
 }
 .cd:focus-visible {
   outline: 2px solid #ffffff44;
@@ -292,4 +293,3 @@ p#pDesc {
 .cover {
   display: none;
 }
-
