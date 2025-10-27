@@ -5,6 +5,12 @@
       "title": "777 - laskaar",
       "label": "data/img/777/777_lateral.jpg",
       "src": "data/777.json"
+    },
+    {
+      "id": "777",
+      "title": "777 - laskaar",
+      "label": "data/img/777/777_lateral.jpg",
+      "src": "data/777.json"
     }
   ]
 }
