@@ -1,7 +1,7 @@
 const stack = document.getElementById("cdStack");
 const host = document.getElementById("scrollHost");
 const tpl = document.getElementById("cdTemplate");
-const sortSel = document.getElementById("sortSel");
+const sortSel = document.getElementById("sortSel") || null;
 let manifest = [],
   order = [],
   nextIndex = 0;
@@ -23,7 +23,7 @@ async function init() {
   // Desactivamos el scroll infinito ya que no hay elementos de relleno
   // host.addEventListener('scroll', maybeAppend);
   // window.addEventListener('resize', maybeAppend);
-  sortSel.addEventListener("change", onSortChange);
+  if (sortSel) sortSel.addEventListener("change", onSortChange);
 }
 function normalizeItem(it, idx) {
   // El manifest simplificado solo tiene proyectos 'reales'
@@ -35,7 +35,7 @@ function normalizeItem(it, idx) {
   };
 }
 function onSortChange() {
-  const v = sortSel.value;
+  const v = sortSel ? sortSel.value : "default";
   if (v === "alpha") {
     order = [...manifest].sort((a, b) => a.title.localeCompare(b.title));
   }

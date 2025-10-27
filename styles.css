@@ -292,3 +292,12 @@ p#pDesc {
 .cover {
   display: none;
 }
+
+
+/* -- helper: alturas correctas cuando no hay header -- */
+.viewport.no-header { 
+  height: 100dvh;
+}
+.viewport.no-header .project-stage {
+  height: 100dvh;
+}

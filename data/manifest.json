@@ -2,15 +2,15 @@
   "items": [
     {
       "id": "777",
-      "title": "777 - laskaar",
+      "title": "777",
       "label": "data/img/777/777_lateral.jpg",
       "src": "data/777.json"
     },
     {
-      "id": "777",
-      "title": "777 - laskaar",
-      "label": "data/img/777/777_lateral.jpg",
-      "src": "data/777.json"
+      "id": "bb",
+      "title": "bb",
+      "label": "data/img/bb/bb_lateral.jpg",
+      "src": "data/bb.json"
     }
   ]
 }

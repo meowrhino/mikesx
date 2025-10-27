@@ -3,7 +3,6 @@
   "artist": "LASKAAR",
   "year": 2022,
   "description": "album cover + show poster",
-  "cover": "data/img/777/777_cover.jpg",
   "images": [
     "data/img/777/777_cover.jpg",
     "data/img/777/777_1.jpg",
