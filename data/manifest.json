@@ -15,6 +15,14 @@
       "label": "data/img/bb/bb_lateral.jpg",
       "cover": "data/img/bb/bb_cover.jpg",
       "src": "data/bb.json"
+    },
+    {
+      "id": "anela",
+      "title": "anela",
+      "artist": "belen aguilera",
+      "label": "data/img/anela/anela_lateral.jpg",
+      "cover": "data/img/anela/anela_cover.jpg",
+      "src": "data/bb.json"
     }
   ]
 }
