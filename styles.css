@@ -1,7 +1,7 @@
 /* v6: mobile-first, header fijo dentro del 'móvil', stack centrado en desktop,
    scroll infinito, sin overscroll arriba, y páginas de proyecto/about. */
 :root {
-  --bg: #141414;
+  --bg: #000;
   --ink: #e7e7e7;
   --muted: #a0a0a0;
   --cd-filler-h: clamp(48px, 6svh, 84px);
@@ -20,7 +20,7 @@ body {
 }
 body {
   margin: 0;
-  background: #0f0f0f;
+  background: #000;
   color: var(--ink);
 }
 
@@ -31,7 +31,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background: #0f0f0f;
+  background: #000;
 }
 /* Stack centrado en desktop */
 .scroll-host {
@@ -42,7 +42,7 @@ body {
   overscroll-behavior: contain; /* no mostrar fondo por encima */
   background: var(--bg);
   /* bordes sutiles como móvil */
-  box-shadow: 0 0 0 1px #000 inset;
+  /* box-shadow: 0 0 0 1px #000 inset; */
 }
 @media (min-width: 900px) {
   .scroll-host {
@@ -150,6 +150,7 @@ body {
 .cd [class*="cover"]{
   height: auto !important;
   min-height: 0 !important;
+  display: contents;
 }
 .cd:focus-visible {
   outline: 2px solid #ffffff44;
@@ -164,7 +165,7 @@ body {
   overflow: auto;
   overscroll-behavior: contain;
   position: relative;
-  background: #000; /* se sustituye por bg cover */
+  background: #000;
 }
 @media (min-width: 900px) {
   .viewport.project .project-stage {
@@ -213,7 +214,7 @@ body {
   height: calc(100dvh - 48px);
   overflow: auto;
   overscroll-behavior: contain;
-  background: #111;
+  background: #000;
   padding: 14px;
 }
 @media (min-width: 900px) {
