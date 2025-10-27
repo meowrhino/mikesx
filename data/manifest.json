@@ -22,7 +22,7 @@
       "artist": "belen aguilera",
       "label": "data/img/anela/anela_lateral.jpg",
       "cover": "data/img/anela/anela_cover.jpg",
-      "src": "data/bb.json"
+      "src": "data/anela.json"
     },
     {
       "id": "celoso",
@@ -30,7 +30,7 @@
       "artist": "mikesx",
       "label": "data/img/celoso/celoso_lateral.jpg",
       "cover": "data/img/celoso/celoso_cover.jpg",
-      "src": "data/bb.json"
+      "src": "data/celoso.json"
     }
   ]
 }

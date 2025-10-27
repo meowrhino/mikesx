@@ -90,18 +90,6 @@ function makeCD(item) {
     if (item.cover) node.dataset.cover = item.cover;
     if (item.artist) node.dataset.artist = item.artist;
 
-    // Cuando la imagen cargue, usa su tamaño natural para fijar proporción y ancho natural
-    const applySize = () => {
-      const w = img.naturalWidth || 1400;
-      const h = img.naturalHeight || 222;
-      // CSS variables que gobiernan el layout (definidas en styles.css)
-      node.style.setProperty("--cd-natural-w", w + "px");
-      node.style.setProperty("--cd-aspect", `${w} / ${h}`);
-      // Además lo aplicamos directo por compatibilidad
-      node.style.aspectRatio = `${w} / ${h}`;
-    };
-    if (img.complete) applySize();
-    else img.addEventListener("load", applySize, { once: true });
   } else if (img) {
     // Si no hay label, elimina la imagen para que no quede un placeholder roto
     img.remove();

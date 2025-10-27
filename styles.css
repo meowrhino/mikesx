@@ -5,6 +5,8 @@
   --ink: #e7e7e7;
   --muted: #a0a0a0;
   --cd-filler-h: clamp(48px, 6svh, 84px);
+  --cd-row-h: clamp(110px, 14svh, 180px);
+  --topbar-h: 48px;
 }
 * {
   box-sizing: border-box;
@@ -37,18 +39,27 @@ body {
 .scroll-host {
   width: 100dvw;
   max-width: 100dvw;
-  height: calc(100dvh - 48px); /* topbar reduce altura disponible */
+  height: calc(100dvh - var(--topbar-h));
   overflow-y: auto;
   overscroll-behavior: contain; /* no mostrar fondo por encima */
   background: var(--bg);
   /* bordes sutiles como móvil */
   /* box-shadow: 0 0 0 1px #000 inset; */
 }
+.viewport.no-header .scroll-host { height: 100dvh; }
+
+#cdStack { display: flex; flex-direction: column; align-items: stretch; gap: 0; line-height: 0; }
+
 @media (min-width: 900px) {
   .scroll-host {
     width: clamp(320px, 48vw, 560px);
     max-width: 560px;
     height: calc(100dvh - 56px);
+  }
+  .topbar {
+    width: clamp(320px, 48vw, 560px);
+    height: 56px;
+    --topbar-h: 56px;
   }
 }
 
@@ -67,12 +78,7 @@ body {
   backdrop-filter: blur(3px);
   z-index: 10;
 }
-@media (min-width: 900px) {
-  .topbar {
-    width: clamp(320px, 48vw, 560px);
-    height: 56px;
-  }
-}
+
 .topbar a {
   color: #fff;
   text-decoration: none;
@@ -96,61 +102,24 @@ body {
   padding: 6px 8px;
 }
 
-/* Stack - sin gaps */
 .cd {
   position: relative;
   display: block;
-  /* En móvil ocupa 100%; en desktop no excede su ancho natural */
-  width: min(100%, var(--cd-natural-w, 1400px));
-  /* El alto lo gobierna la proporción natural de la imagen */
+  width: 100%;
   height: auto;
-  aspect-ratio: var(--cd-aspect, auto);
   overflow: hidden;
   text-decoration: none;
 }
 .cd .bg {
-  position: absolute;
-  inset: 0;
-  background: #d6d6d6;
-}
-.cd[data-type="filler"] {
-  height: var(--cd-filler-h);
-} /* relleno un poco más alto */
-.cd[data-type="filler"] .bg {
-  /* 8 franjas exactas por filler, sin artefactos en el borde */
-  background-image: linear-gradient(
-    180deg,
-    #dcdcdc 0,
-    #dcdcdc 50%,
-    #cfcfcf 50%,
-    #cfcfcf 100%
-  );
-  background-size: 100% calc(var(--cd-filler-h) / 8);
-  background-repeat: repeat-y;
-  background-position: top left;
-}
-.cd[data-type="real"] .bg {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-.label-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
   display: none;
-  filter: drop-shadow(0 2px 3px #0009);
 }
-.cd[data-type="real"] .label-img {
+
+.label-img {
   display: block;
-}
-.cd [class*="label"],
-.cd [class*="cover"] {
-  height: auto !important;
-  min-height: 0 !important;
-  display: contents;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px #0009);
 }
 .cd:focus-visible {
   outline: 2px solid #ffffff44;
@@ -300,4 +269,9 @@ p#pDesc {
 }
 .viewport.no-header .project-stage {
   height: 100dvh;
+}
+
+
+@media (min-width: 900px){
+  :root { --cd-row-h: clamp(140px, 18svh, 220px); }
 }
