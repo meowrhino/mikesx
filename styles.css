@@ -170,7 +170,7 @@ p#pDesc {
 .project-stage {
   position: relative; /* ya lo tienes en desktop; lo reafirmamos para mobile */
   isolation: isolate; /* asegura que los pseudo no sangren fuera */
-  overflow: hidden; /* evita scroll lateral/vertical extra del blur */
+  overflow-x: hidden; /* evita scroll lateral/vertical extra del blur */
 }
 
 /* Capas de fondo */
@@ -185,11 +185,17 @@ p#pDesc {
 
 /* Imagen blur */
 .project-stage::before {
-  inset: 0;
+  inset: -50px;
   background: center / cover no-repeat var(--stage-bg, none);
   filter: blur(24px);
-  will-change: filter;
+  animation: breathe 8s ease-in-out infinite;
 }
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
 
 /* Oscurecido suave para legibilidad */
 .project-stage::after {
