@@ -1,30 +1,37 @@
 "use strict";
 
 /**
- * MIKESX — main.js (refactor v2)
- * -------------------------------------------------------------
- * - Carga manifest.json y pinta la pila de CDs.
- * - Sin scroll infinito: renderiza todos los items existentes.
- * - Orden: por defecto o alfabético (por artista o título).
+ * MIKESX — main.js (random-first + fill-to-120% + simple infinite scroll)
+ * -----------------------------------------------------------------------
+ * - Carga manifest.json y pinta TODOS los CDs una vez, en orden aleatorio.
+ * - Si no hay suficiente contenido, rellena hasta cubrir ~FILL_FACTOR * 100% del viewport
+ *   añadiendo lotes (con posibles repeticiones) tomados de un pool circular re-barajable.
+ * - Scroll infinito simple: cuando el usuario se acerca al final, añade otro lote.
+ * - Eliminado el menú de ordenación y cualquier lógica asociada.
  */
 
 /* ===================== DOM refs ============================= */
 const stack = document.getElementById("cdStack");
-const host = document.getElementById("scrollHost");
-const tpl = document.getElementById("cdTemplate");
-const sortSel = document.getElementById("sortSel") || null;
+const host  = document.getElementById("scrollHost");
+const tpl   = document.getElementById("cdTemplate");
+
+/* ===================== Config (tweakables) ================== */
+/** Tamaño del lote para rellenar / infinito (puedes cambiarlo) */
+const BATCH_SIZE  = 8;
+/** Umbral “cerca del final”. 0.2 = al pasar el 80% del scroll */
+const THRESHOLD   = 0.2;
+/** Factor de relleno mínimo del alto de ventana (1.2 = 120% de dvh) */
+let FILL_FACTOR   = 1.2; // <-- variable expuesta para que la cambiéis fácil
 
 /* ===================== Estado =============================== */
 /** @type {Array<CDItem>} */
 let manifest = [];
-/** @type {Array<CDItem>} */
-let order = [];
-let nextIndex = 0; // índice de pintado incremental
-
-/* ===================== Constantes =========================== */
-let CHUNK = 10; // tamaño de carga actual (se recalcula al iniciar)
-const NEXT_CHUNK = 8; // tandas siguientes
-const THRESHOLD = 0.3; // dispara la siguiente tanda cuando queda ~30% para el final (carga antes)
+/** Pool barajado (se recorre en bucle para crear lotes extra) */
+let pool = [];
+/** Puntero dentro del pool circular */
+let poolPtr = 0;
+/** Control de listeners para no duplicarlos accidentalmente */
+let _scrollBound = false;
 
 /* ===================== Bootstrap ============================ */
 init().catch((err) => {
@@ -36,28 +43,34 @@ init().catch((err) => {
 });
 
 /**
- * Punto de entrada: trae manifest y renderiza.
+ * Punto de entrada.
+ * 1) Carga manifest y lo normaliza.
+ * 2) Pinta TODOS los ítems 1 vez en orden aleatorio.
+ * 3) Rellena hasta ~FILL_FACTOR * 100% del viewport si no hay overflow.
+ * 4) Activa scroll infinito simple.
  */
 async function init() {
   const m = await fetchJSON("manifest.json");
   manifest = (m.items || []).map((it, idx) => normalizeItem(it, idx));
-  order = [...manifest];
 
-  // Calcular chunk inicial según alto del viewport y altura real de un CD
-  CHUNK = computeInitialChunk();
+  // 1) Crear un orden aleatorio inicial
+  const randomOnce = shuffle([...manifest]);
 
-  renderAll();
+  // 2) Render: primera pasada (todos una vez, aleatorio)
+  renderInitial(randomOnce);
 
-  if (sortSel) sortSel.addEventListener("change", onSortChange);
+  // 3) Preparar pool circular para rellenos (arranca barajado)
+  pool = shuffle([...manifest]);
+  poolPtr = 0;
+
+  // 4) Asegurar overflow mínimo (~FILL_FACTOR * viewport)
+  ensureMinFill();
+
+  // 5) Activar scroll infinito
+  enableInfiniteScroll();
 }
 
 /* ===================== Normalización ======================== */
-/**
- * Normaliza un item del manifest a nuestra estructura interna.
- * @param {Partial<CDItem>} it
- * @param {number} idx
- * @returns {CDItem}
- */
 function normalizeItem(it, idx) {
   return {
     id: it.id ?? String(idx),
@@ -69,108 +82,92 @@ function normalizeItem(it, idx) {
   };
 }
 
-/* ===================== Ordenación =========================== */
-function onSortChange() {
-  const v = sortSel ? sortSel.value : "default";
-  applySort(v);
-  renderAll();
-}
-
-/**
- * Aplica el criterio de ordenación sobre "order".
- * @param {"default"|"alpha"} mode
- */
-function applySort(mode) {
-  if (mode === "alpha") {
-    order = [...manifest].sort((a, b) =>
-      (a.artist || a.title).localeCompare(b.artist || b.title, undefined, {
-        sensitivity: "base",
-      })
-    );
-  } else {
-    order = [...manifest];
-  }
-}
-
 /* ===================== Render =============================== */
 /**
- * Reinicia el contenedor y pinta todos los elementos (sin infinito).
+ * Pinta una pasada completa (todos los ítems) en el orden dado.
  */
-function renderAll() {
+function renderInitial(list) {
   if (!stack) return;
-  // Evita duplicar listeners si re-renderizamos (p.ej., al cambiar orden)
-  disableInfiniteScroll();
-
   stack.innerHTML = "";
-  nextIndex = 0;
-
-  // 1) Cargar primer bloque
-  appendChunk(CHUNK);
-
-  // 2) Si aún no hay overflow (pantallas altas / pocos ítems), seguir cargando
-  requestAnimationFrame(() => ensureOverflow());
-
-  // 3) Activar listeners para continuar cargando al hacer scroll / resize
-  enableInfiniteScroll();
+  const frag = document.createDocumentFragment();
+  for (const item of list) {
+    frag.appendChild(makeCD(item));
+  }
+  stack.appendChild(frag);
 }
 
 /**
- * Añade N elementos respetando el límite de "order".
- * @param {number} n
+ * Asegura que el contenedor tenga al menos ~FILL_FACTOR * 100% del alto de ventana.
+ * Rellena en tandas de BATCH_SIZE (con posibles repeticiones) hasta alcanzar la meta
+ * o hasta que el sistema detecte overflow suficiente.
  */
-function appendChunk(n) {
-  const limit = Math.min(nextIndex + n, order.length);
-  for (let i = nextIndex; i < limit; i++) {
-    const item = order[i];
-    stack.appendChild(makeCD(item));
-    nextIndex++;
-  }
-}
-
-function ensureOverflow() {
+function ensureMinFill() {
   if (!host) return;
-  // Cargar hasta que exista scroll o se agoten los elementos
-  let safety = 0; // evita bucles infinitos en casos raros
-  while (nextIndex < order.length && host.scrollHeight <= host.clientHeight && safety < 100) {
-    appendChunk(NEXT_CHUNK);
+  const targetPx = Math.ceil(window.innerHeight * FILL_FACTOR);
+
+  let safety = 0; // evita bucles raros
+  while (host.scrollHeight < targetPx && safety < 200) {
+    appendBatch(BATCH_SIZE);
     safety++;
   }
 }
 
-function maybeAppend() {
-  if (!host) return;
-  const { scrollTop, scrollHeight, clientHeight } = host;
-  const nearBottom = (scrollTop + clientHeight) / scrollHeight > (1 - THRESHOLD);
-  if (nearBottom) appendChunk(NEXT_CHUNK);
-}
+/**
+ * Añade un lote de N ítems al final, sacándolos del pool circular.
+ * Si se agota el pool, se re-baraja para evitar patrones repetitivos fijos.
+ */
+function appendBatch(n) {
+  if (!stack || pool.length === 0) return;
 
-let _infBound = false;
-function enableInfiniteScroll() {
-  if (!host || _infBound) return;
-  host.addEventListener("scroll", maybeAppend);
-  window.addEventListener("resize", onResizeReflow);
-  _infBound = true;
-  // Comprobación inmediata por si ya estamos cerca del fondo tras el primer render
-  maybeAppend();
-}
-
-function disableInfiniteScroll() {
-  if (!host || !_infBound) return;
-  host.removeEventListener("scroll", maybeAppend);
-  window.removeEventListener("resize", onResizeReflow);
-  _infBound = false;
-}
-
-function onResizeReflow() {
-  // Si tras un resize ya no hay overflow (p.ej., orientación), forzamos cargar más
-  ensureOverflow();
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < n; i++) {
+    if (poolPtr >= pool.length) {
+      pool = shuffle(pool);
+      poolPtr = 0;
+    }
+    const item = pool[poolPtr++];
+    frag.appendChild(makeCD(item));
+  }
+  stack.appendChild(frag);
 }
 
 /**
- * Genera el nodo de un CD listo para insertar en el DOM.
- * @param {CDItem} item
- * @returns {HTMLAnchorElement}
+ * Listener de scroll simplificado: al pasar el (1 - THRESHOLD) del scroll,
+ * carga otra tanda.
  */
+function onHostScroll() {
+  if (!host) return;
+  const { scrollTop, scrollHeight, clientHeight } = host;
+  const nearBottom = (scrollTop + clientHeight) / scrollHeight >= (1 - THRESHOLD);
+  if (nearBottom) appendBatch(BATCH_SIZE);
+}
+
+/**
+ * En mobile/orientación, si el viewport crece y ya no hay overflow suficiente,
+ * volvemos a completar hasta ~FILL_FACTOR * viewport.
+ */
+function onResize() {
+  ensureMinFill();
+}
+
+function enableInfiniteScroll() {
+  if (!host || _scrollBound) return;
+  host.addEventListener("scroll", onHostScroll, { passive: true });
+  window.addEventListener("resize", onResize);
+  _scrollBound = true;
+
+  // Llamada inicial por si al render ya estamos “abajo” en pantallas muy altas
+  onHostScroll();
+}
+
+function disableInfiniteScroll() {
+  if (!host || !_scrollBound) return;
+  host.removeEventListener("scroll", onHostScroll);
+  window.removeEventListener("resize", onResize);
+  _scrollBound = false;
+}
+
+/* ===================== Vistas =============================== */
 function makeCD(item) {
   const node =
     tpl && tpl.content
@@ -180,18 +177,15 @@ function makeCD(item) {
   if (!node.classList.contains("cd")) node.classList.add("cd");
   node.dataset.type = "real";
 
-  // Imagen de la carátula lateral
+  // Imagen lateral
   const img = node.querySelector ? node.querySelector(".label-img") : null;
   if (img && item.label) {
     img.src = item.label;
     img.alt = (item.artist ? item.artist + " — " : "") + (item.title || "");
     img.loading = "lazy";
-
-    // Persist cover and artist as data attributes para futuros usos
-    if (item.cover) node.dataset.cover = item.cover;
+    if (item.cover)  node.dataset.cover  = item.cover;
     if (item.artist) node.dataset.artist = item.artist;
   } else if (img) {
-    // Si no hay label, retiramos la img para evitar placeholder roto
     img.remove();
   }
 
@@ -199,38 +193,13 @@ function makeCD(item) {
   node.href = `proyecto.html?id=${encodeURIComponent(item.id)}`;
   node.setAttribute(
     "aria-label",
-    (item.artist ? item.artist + " — " : "") +
-      (item.title || item.id || "proyecto")
+    (item.artist ? item.artist + " — " : "") + (item.title || item.id || "proyecto")
   );
 
   return node;
 }
 
-/* ===================== Helper =============================== */
-function computeInitialChunk(){
-  if (!host || order.length === 0) return 10;
-  // Medimos la altura real de un CD con un nodo temporal oculto
-  const tmp = makeCD(order[0]);
-  tmp.style.visibility = "hidden";
-  tmp.style.position = "absolute";
-  tmp.style.pointerEvents = "none";
-  stack.appendChild(tmp);
-  const h = Math.max(1, tmp.getBoundingClientRect().height || 140);
-  stack.removeChild(tmp);
-
-  const rows = Math.ceil(host.clientHeight / h);
-  // Un poco más de margen para cubrir barras de navegador en móvil
-  const initial = Math.min(order.length, Math.max(8, rows + 2));
-  return initial;
-}
-
 /* ===================== Utilidades =========================== */
-/**
- * Fetch JSON sencillo con manejo de errores.
- * @template T
- * @param {string} url
- * @returns {Promise<T>}
- */
 async function fetchJSON(url) {
   const res = await fetch(url).catch((err) => {
     console.error("Fetch error:", err);
@@ -242,13 +211,22 @@ async function fetchJSON(url) {
   return res.json();
 }
 
+function shuffle(arr) {
+  // Fisher–Yates
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = (Math.random() * (i + 1)) | 0;
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 /* ===================== Tipos JSDoc ========================== */
 /**
  * @typedef {Object} CDItem
  * @property {string} id
  * @property {string} title
- * @property {string} label   // ruta de la imagen lateral
- * @property {string} src     // no usado actualmente
+ * @property {string} label
+ * @property {string} src
  * @property {string} artist
- * @property {string} cover   // posible portada
+ * @property {string} cover
  */
