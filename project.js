@@ -63,4 +63,72 @@ if (images.length > 0) {
   // Ocultamos el contenedor si no hay imágenes
   gallery.style.display = "none";
 }
+
+// --- Lightbox simple (sin dependencias) -----------------------
+// Crear contenedor único
+const lb = document.createElement('div');
+lb.className = 'lightbox';
+lb.setAttribute('aria-hidden', 'true');
+lb.style.display = 'none';
+lb.innerHTML = `
+  <button class="lightbox-close" aria-label="Cerrar">×</button>
+  <img class="lightbox-img" alt="" />
+`;
+document.body.appendChild(lb);
+
+const lbImg = lb.querySelector('.lightbox-img');
+const lbClose = lb.querySelector('.lightbox-close');
+let scrollLockY = 0;
+
+function lockScroll() {
+  scrollLockY = window.scrollY || window.pageYOffset || 0;
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollLockY}px`;
+  document.body.style.left = '0';
+  document.body.style.right = '0';
+  document.body.style.width = '100%';
+}
+function unlockScroll() {
+  document.body.style.position = '';
+  document.body.style.top = '';
+  document.body.style.left = '';
+  document.body.style.right = '';
+  document.body.style.width = '';
+  window.scrollTo(0, scrollLockY);
+}
+
+function openLightbox(src, alt) {
+  lbImg.src = src;
+  lbImg.alt = alt || '';
+  lb.style.display = 'flex';
+  lb.setAttribute('aria-hidden', 'false');
+  document.documentElement.classList.add('has-lightbox');
+  lockScroll();
+  document.addEventListener('keydown', onKeyDown);
+}
+function closeLightbox() {
+  lb.style.display = 'none';
+  lb.setAttribute('aria-hidden', 'true');
+  document.documentElement.classList.remove('has-lightbox');
+  document.removeEventListener('keydown', onKeyDown);
+  // limpiar src para liberar memoria en móviles
+  lbImg.removeAttribute('src');
+  unlockScroll();
+}
+function onKeyDown(ev) {
+  if (ev.key === 'Escape') closeLightbox();
+}
+
+// Cierre por botón y por clic en fondo (no sobre la imagen)
+lbClose.addEventListener('click', closeLightbox);
+lb.addEventListener('click', (ev) => {
+  if (ev.target === lb) closeLightbox();
+});
+
+// Delegación: abrir al clicar cualquier imagen de la galería
+gallery.addEventListener('click', (ev) => {
+  const img = ev.target.closest('.gallery-image');
+  if (!img) return;
+  openLightbox(img.src, img.alt);
+});
 }
