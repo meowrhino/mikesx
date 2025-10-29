@@ -43,6 +43,7 @@ document.getElementById("pTitle").textContent = data.title || "Sin título";
 document.getElementById("pArtist").textContent = data.artist || "";
 document.getElementById("pYear").textContent = data.year || "";
 document.getElementById("pDesc").textContent = data.description || "";
+document.title = (data.title || "PROYECTO").toUpperCase();
 
 // Lógica para la galería de imágenes con scroll lateral
 const gallery = document.getElementById("imageGallery");
