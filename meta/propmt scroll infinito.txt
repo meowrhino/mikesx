@@ -1,0 +1,60 @@
+ORIGINAL:
+vale pues hay unas cosas que me gustaría que viesemos
+
+por un lado el scroll infinito no carga!!! no carga ni cuando queda espacio para añadir más CD's ni cuando haces scroll hacia abajo!
+
+
+o sea esto Una vez calculado el chunk inicial, el sistema carga ese número de CDs. Inmediatamente después, la función `ensureOverflow()` verifica si hay suficiente contenido para que aparezca la barra de scroll. Si la pantalla es muy alta o hay pocos elementos, continúa cargando CDs en bloques de 8 elementos hasta que se genere scroll o se agoten los elementos disponibles. 
+
+o esto     -   Añade un *event listener* al scroll para cargar más CDs cuando el usuario se acerca al final de la lista (scroll infinito).
+
+que es esto:
+
+##### Scroll Infinito
+
+El scroll infinito se implementa mediante un sistema de eventos que monitorea la posición del scroll. Cuando el usuario se desplaza, la función `maybeAppend()` calcula si el usuario está cerca del final del contenido visible. Específicamente, verifica si el usuario ha alcanzado el 70% del contenido total (definido por la constante `THRESHOLD = 0.3`). Si es así, carga automáticamente el siguiente bloque de 8 CDs.
+
+Este sistema también incluye un mecanismo de prevención de duplicación de listeners. La variable `_infBound` asegura que los event listeners solo se añadan una vez, evitando problemas de rendimiento por listeners duplicados cuando se re-renderiza la lista.
+
+
+
+no esta funcionando muy bien, entiendo que carga al iniciar la pagina el "chunk" inicial que contiene 1 instancia de TODOS los CD's que hay en la home, pero no se porque no funciona, podrias analizarlo y comentarme lo que puedas ver?
+
+entonces me gustaria que pensasemos como seria una manera distinta de cargarlos, nada cambia a nivel de CSS, sino que la primera "carga" al abrir la web cargue todos los CD's del manifest.json en un orden aleatorio, y cuando haya "cargado todos" si aun no se ha rellenado el contenedor (o no se si hay una manera que se rellene un poco "de más" para que siempre haya scroll, y asi se pueda activar la carga de nuevos CD's fácil, que rellene 120dvh o algo asi es posible?)
+
+que opciones ves para plantearlo?
+
+ay y esto seria eliminar el codigo para el "menu" de sorting en la home porque no lo vamos a usar, explicame lo que eliminarias tambien
+
+
+
+
+🧩 Prompt resumido y clarificado
+
+Quiero revisar y rehacer el sistema de scroll infinito de mi web.
+Actualmente, el sistema:
+	•	Calcula un chunk inicial con todos los CDs del manifest.json (ya no necesitamos dividirlo).
+	•	Tiene una función ensureOverflow() que intenta llenar la pantalla y otra maybeAppend() que añade más CDs al hacer scroll.
+	•	Usa un listener controlado por _infBound para evitar duplicados.
+
+➡️ Problema:
+No está funcionando. No se cargan más CDs ni cuando sobra espacio vertical ni al hacer scroll hacia abajo.
+
+➡️ Nuevo enfoque que quiero:
+	1.	Cargar todos los CDs del manifest.json en un orden aleatorio desde el inicio (sin chunking).
+	2.	Si el contenedor no genera scroll, rellenar más contenido hasta cubrir al menos un 120 dvh (así siempre hay margen para el scroll infinito).
+	3.	El scroll infinito debe seguir activo, pero añadiendo nuevos elementos solo cuando el usuario se acerque al final.
+	4.	El sistema de ordenación (sorting menu) ya no se usará → eliminar todo el código relacionado con:
+	•	Botones o menús de ordenación en la home.
+	•	Listeners y funciones de sortBy..., applySorting, o equivalentes.
+	•	Variables o flags relacionadas (_sortMode, etc.).
+
+⸻
+
+🧠 Notas para el rediseño
+	•	El CSS no cambia.
+	•	Queremos un comportamiento predecible, sin depender de cálculos de chunks dinámicos.
+	•	Si el usuario llega al final, puede seguir cargando aleatoriamente más CDs (repetidos si hace falta).
+	•	Priorizar que el scroll infinito funcione de manera fluida en desktop y móvil.
+
+⸻
