@@ -174,21 +174,18 @@ p#pDesc {
 }
 
 /* Capas de fondo */
-.project-stage::before,
-.project-stage::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
+/* Definimos cada pseudo por separado para controlar el stacking y el posicionamiento */
 
-/* Imagen blur */
+/* Imagen blur fija al viewport */
 .project-stage::before {
-  inset: -50px;
+  content: "";
+  position: fixed;           /* fijo respecto al viewport */
+  inset: -50px;              /* margen para que el blur no se recorte */
   background: center / cover no-repeat var(--stage-bg, none);
   filter: blur(24px);
   animation: breathe 8s ease-in-out infinite;
+  z-index: -2;               /* detrás del resto de capas */
+  pointer-events: none;
 }
 
 @keyframes breathe {
@@ -197,25 +194,22 @@ p#pDesc {
 }
 
 
-/* Oscurecido suave para legibilidad */
-.project-stage::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background: radial-gradient(
-      80% 60% at 50% 40%,
-      rgba(0, 0, 0, 0.1),
-      transparent 60%
-    ),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5));
-}
-
 /* Asegura que el contenido esté por encima de las capas de fondo */
 .project-card {
   position: relative;
   z-index: 1;
+}
+
+/* Overlay oscuro que acompaña el scroll del contenido */
+.project-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(80% 60% at 50% 40%, rgba(0,0,0,0.1), transparent 60%),
+    linear-gradient(180deg, rgba(0,0,0,0.30), rgba(0,0,0,0.50));
+  z-index: -1;              /* detrás del contenido del card, por encima del blur fijo */
+  pointer-events: none;
 }
 
 .project-meta {
