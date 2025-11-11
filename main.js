@@ -81,11 +81,11 @@ async function init() {
     return;
   }
 
-  // 1) Crear un orden aleatorio inicial
-  const randomOnce = shuffle([...manifest]);
+  // 1) Respetar el orden del manifest en la primera pasada
+  const orderedOnce = [...manifest];
 
-  // 2) Render: primera pasada (todos una vez, aleatorio)
-  renderInitial(randomOnce);
+  // 2) Render: primera pasada (todos una vez, orden del manifest)
+  renderInitial(orderedOnce);
 
   // 3) Preparar pool circular para rellenos (triple pool para reducir re-barajados)
   pool = shuffle([...manifest, ...manifest, ...manifest]);
