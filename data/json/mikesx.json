@@ -2,8 +2,11 @@
   "title": "mike six",
   "artist": "graphic / visual artist",
   "year": 1994,
-  "description": "Mike Six es un artista hispano-alemán que mezcla arte digital, fotografía, collage y gráfica. Su obra combina lo cotidiano con lo onírico, explorando cuerpos, espacios y gestos con una mirada directa, personal y nostálgica. Su trabajo refleja una búsqueda constante de equilibrio entre lo crudo y lo poético.",
+  "description": "Diseñador gráfico hispano-alemán basado en Madrid, centrado en portadas, álbumes, visuales y carteles para artistas musicales y proyectos artísticos. El imaginario mezcla textura, emoción y rebeldía, buscando belleza en lo crudo y ternura en lo violento. Interesado en la tensión entre lo suave y lo metálico, la violencia sutil. \n\n <span class='highlight'>open to work \n prints on demand </span>",
+  "instagram": "https://instagram.com/mikesx",
   "images": [
-    "data/img/mikesx/mikesx_cover.jpg"
+    "data/img/mikesx/mikesx_cover2.webp",
+    "data/img/mikesx/mikesx_cover.webp",
+    "data/img/mikesx/mikesx_cover5.webp"
   ]
 }

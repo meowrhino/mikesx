@@ -12,19 +12,19 @@ async function init() {
     return;
   }
   
-  // Cargar el JSON de detalle del proyecto
-  let data = {};
+  // Cargar el JSON de detalle y fusionarlo sobre los datos del manifest.
+  // El manifest aporta campos que el detalle no tiene (email, isAbout...) y
+  // el detalle manda sobre el manifest cuando ambos definen lo mismo.
+  let detail = {};
   if (item.src) {
     try {
-      data = await (await fetch(item.src)).json();
+      detail = await (await fetch(item.src)).json();
     } catch (e) {
       console.warn(e);
-      // Si falla la carga del JSON de detalle, usamos los datos del manifest como fallback
-      data = item;
+      // Si falla, seguimos solo con los datos del manifest
     }
-  } else {
-    data = item;
   }
+  const data = { ...item, ...detail };
 
 // Stage + fondo blur con la 1ª imagen de la galería (fallback: data.bg)
 const stage = document.getElementById("projectStage");
@@ -42,8 +42,34 @@ if (coverSrc) {
 document.getElementById("pTitle").textContent = data.title || "Sin título";
 document.getElementById("pArtist").textContent = data.artist || "";
 document.getElementById("pYear").textContent = data.year || "";
-document.getElementById("pDesc").textContent = data.description || "";
+document.getElementById("pDesc").innerHTML =
+  (data.description || "").replace(/\n/g, "<br>");
+
+// Insta Link
+const instaLink = document.getElementById("pInsta");
+if (instaLink && data.instagram) {
+  instaLink.href = data.instagram;
+} else if (instaLink) {
+  instaLink.style.display = "none";
+}
 document.title = (data.title || "PROYECTO").toUpperCase();
+
+// Mail Link
+const mailLink = document.getElementById("pMail");
+
+if (mailLink) {
+  const email = data.email || "heymikesx@gmail.com";
+  const isAbout = data.isAbout === true || data.isAbout === "true";
+
+  if (isAbout) {
+    mailLink.href = `mailto:${email}`;
+    mailLink.style.display = "inline-block";
+  } else {
+    mailLink.removeAttribute("href");
+    mailLink.style.display = "none";
+  }
+}
+
 
 // Inserta el enlace pequeño cuando el proyecto es "mikesx"
 if ((id || "").toLowerCase() === "mikesx") {
