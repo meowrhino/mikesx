@@ -1,0 +1,20 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "abrazo de guerra",
+  "artist": "mikesx",
+  "year": 2026,
+  "description": "Solo cuando la colisión fue de los cuerpos, en vez de tratarse de proyectiles, y pese a compartir el mismo fin, abrir un agujero en el corazón del otro, solo entonces, fue cuando la tormenta de tierra se congeló en el aire. Junto al jadeo de los dos, el único movimiento visible era el de los láseres apuntando a la nada, al polvo .psd",
+  "label": "abrazo_lateral.webp",
+  "cover": "abrazo_cover.webp",
+  "photos": [
+    "abrazo_cover.webp",
+    "abrazo_1.webp",
+    "abrazo_2.webp",
+    "abrazo_3.webp",
+    "abrazo_4.webp",
+    "abrazo_5.webp",
+    "abrazo_6.webp",
+    "abrazo_7.webp",
+    "abrazo_8.webp"
+  ]
+}

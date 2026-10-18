@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "fury duty",
+  "artist": "mikesx",
+  "year": 2025,
+  "description": "If Donnie Darko checked AI out, these would be his trials.",
+  "label": "furyduty_lateral.webp",
+  "cover": "furyduty_cover.webp",
+  "photos": [
+    "furyduty_cover.webp",
+    "furyduty_1.webp",
+    "furyduty_2.webp",
+    "furyduty_3.webp",
+    "furyduty_4.webp",
+    "furyduty_5.webp"
+  ]
+}

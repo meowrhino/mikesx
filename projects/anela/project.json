@@ -1,0 +1,21 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "anela",
+  "artist": "belén aguilera",
+  "year": 2025,
+  "description": "Portada y contraportada para Anela, el último álbum de Belén Aguilera. Siendo el acrónimo de “Aunque No Exista La Arcadia”, el proyecto construye un universo de fantasía frágil y delicado, donde la vulnerabilidad se convierte en fortaleza. La figura de una joven centauro, suspendida en un instante de esplendor, evoca la nostalgia de algo que nunca existió. Texturas con ecos ochenteros, composición depurada e impresión en CD y vinilo. Colaboración junto a Sandro Igon y Elvira M. Bárbara.",
+  "label": "anela_lateral.webp",
+  "cover": "anela_cover.webp",
+  "photos": [
+    "anela_cover.webp",
+    "anela_1.webp",
+    "anela_2.webp",
+    "anela_5.webp",
+    "anela_6.webp",
+    "anela_7.webp",
+    "anela_8.webp",
+    "anela_9.webp",
+    "anela_10.webp",
+    "anela_11.webp"
+  ]
+}

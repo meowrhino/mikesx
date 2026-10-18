@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "manners",
+  "artist": "ebbbbb",
+  "year": 2021,
+  "description": "Single covers for the band Ebbb where I've participated as editor and either model or photographer. The visuals are taken with my analog on my summer holidays with my friends.",
+  "label": "manners_lateral.webp",
+  "cover": "manners_cover.webp",
+  "photos": [
+    "manners_cover.webp"
+  ]
+}

@@ -1,3 +1,4 @@
+import { getManifest, projectUrl } from "./js/carga.js";
 "use strict";
 
 /**
@@ -74,7 +75,7 @@ init().catch((err) => {
 async function init() {
   const perfStart = performance.now();
   
-  const m = await fetchJSON("manifest.json");
+  const m = await getManifest();
   manifest = (m.items || []).map((it, idx) => normalizeItem(it, idx));
 
   if (manifest.length === 0) {
@@ -283,7 +284,7 @@ function makeCD(item) {
   }
 
   // Enlace a la página de proyecto
-  node.href = `proyecto.html?id=${encodeURIComponent(item.id)}`;
+  node.href = projectUrl(item.id);
   node.setAttribute(
     "aria-label",
     (item.artist ? item.artist + " — " : "") + (item.title || item.id || "proyecto")

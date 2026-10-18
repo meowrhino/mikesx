@@ -1,0 +1,19 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "mejor que yo",
+  "artist": "st. PAVLO",
+  "year": 2026,
+  "description": "dime ¿lo hace mejor que yo? Portada, visuales y lyric video psd + ai + ae",
+  "label": "mejorqyo_lateral.webp",
+  "cover": "mejorqyo_cover.webp",
+  "photos": [
+    "mejorqyo_cover.webp",
+    "mejorqyo_2.webp",
+    "mejorqyo_3.webp",
+    "mejorqyo_7.webp",
+    "mejorqyo_8.webp",
+    "mejorqyo_9.webp",
+    "mejorqyo_10.webp",
+    "mejorqyo_11.webp"
+  ]
+}

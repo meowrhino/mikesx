@@ -1,30 +1,24 @@
+import { BUILT, getProject } from "./js/carga.js";
+
 init();
 async function init() {
+  // el id: de ?id= (la vista previa, y los enlaces viejos) o de la página /<id>/ que escribe el build
   const params = new URLSearchParams(location.search);
-  const id = params.get("id");
-  const m = await (await fetch("manifest.json")).json();
-  const items = m.items || [];
-  let item = items.find((it) => String(it.id ?? "") === String(id));
-  
+  const id = params.get("id") || window.__ID__;
+  let item = null;
+  try { item = id ? await getProject(id) : null; } catch (e) {
+    console.warn(e);
+    if (!BUILT) return;   // en la vista previa, el error se queda en pantalla
+  }
+
   if (!item) {
-    // Si no se encuentra, redirigir a la home o usar el primer elemento
+    // Si no se encuentra, redirigir a la home
     window.location.href = 'index.html';
     return;
   }
   
-  // Cargar el JSON de detalle y fusionarlo sobre los datos del manifest.
-  // El manifest aporta campos que el detalle no tiene (email, isAbout...) y
-  // el detalle manda sobre el manifest cuando ambos definen lo mismo.
-  let detail = {};
-  if (item.src) {
-    try {
-      detail = await (await fetch(item.src)).json();
-    } catch (e) {
-      console.warn(e);
-      // Si falla, seguimos solo con los datos del manifest
-    }
-  }
-  const data = { ...item, ...detail };
+  // getProject ya trae el item y su detalle juntos (js/house.js)
+  const data = item;
 
 // Stage + fondo blur con la 1ª imagen de la galería (fallback: data.bg)
 const stage = document.getElementById("projectStage");
@@ -89,6 +83,7 @@ if ((id || "").toLowerCase() === "mikesx") {
 
 // Lógica para la galería de imágenes con scroll lateral
 const gallery = document.getElementById("imageGallery");
+gallery.replaceChildren(); // las que escribe el build, para quien no ejecuta JS
 
 if (images.length > 0) {
   images.forEach((src, index) => {

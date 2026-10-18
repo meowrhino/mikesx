@@ -6,46 +6,30 @@ El repositorio `mikesx` contiene el código fuente de una galería de proyectos 
 
 ## Estructura del Proyecto
 
-El proyecto se organiza en los siguientes archivos y directorios principales:
+Sigue la receta de [meowrhino/JAMstack](https://github.com/meowrhino/JAMstack) desde el
+2026-10-18. Para Mike: [GUIA.md](GUIA.md). Traspaso: [TRASPASO.md](TRASPASO.md). Si el build
+falla: [CLAUDE.md](CLAUDE.md).
 
 ```
-.
-├── about.html
-├── about.js
-├── data
-│   ├── img
-│   └── json
-├── index.html
-├── main.js
-├── manifest.json
-├── project.js
-├── proyecto.html
-├── styles.css
-└── todo.md
+data/site.json          el nombre, el dominio y "lists": los CDs de la home, en orden
+projects/<id>/          un CD: project.json (title, artist, year, description, label, cover, photos…) + img/
+schema/                 qué campos lleva cada JSON (VS Code, el build y la vista previa)
+index.html, proyecto.html   las plantillas, y la vista previa con Live Server
+build/build.mjs         → dist/: la home y /<id>/ con sus meta y su contenido dentro
+main.js, project.js     la pila de CDs y la página de un CD (módulos)
+js/house.js             la forma de la casa → la de antes (los items del manifest y su detalle)
+js/carga.js             lee los JSON (en la vista previa, los revisa con schema/); projectUrl()
+js/validar.js           el JSON Schema sin dependencias (de JAMstack)
+fonts/                  Michroma y Saira en woff2 (sin Google Fonts)
 ```
 
-### Archivos HTML
-
-- **`index.html`**: Es la página principal de la aplicación. Contiene la estructura básica de la página, incluyendo un contenedor para la pila de CDs (`cdStack`) y una plantilla (`cdTemplate`) para generar cada CD dinámicamente. Carga el script `main.js` que se encarga de la lógica de la aplicación.
-- **`proyecto.html`**: Es la página de detalle de cada proyecto. Muestra la información específica de un proyecto, incluyendo título, artista, año, descripción y una galería de imágenes. Carga el script `project.js` para obtener y mostrar los datos del proyecto seleccionado.
-- **`about.html`**: Es la página "Acerca de". Muestra información sobre el proyecto o el autor. Carga el script `about.js` para obtener y mostrar el contenido desde un archivo JSON.
-
-### Archivos JavaScript
-
-- **`main.js`**: Es el script principal de la aplicación. Se encarga de:
-      - Cargar el archivo `manifest.json` que contiene la lista de todos los proyectos.
-      - **Renderizar todos los CDs una sola vez en orden aleatorio** (sin menú de ordenación).
-      - **Asegurar un contenido mínimo equivalente a ~`FILL_FACTOR` × 100% del alto de la ventana** (por defecto `FILL_FACTOR = 1.2`, es decir, ~120 dvh) añadiendo lotes de elementos si hace falta.
-      - Implementar **scroll infinito simple**: cuando el usuario se acerca al final (umbral configurable `THRESHOLD`, por defecto `0.2`), se añade otro lote de elementos (`BATCH_SIZE`, por defecto `8`).
-      - Gestionar el enlace de cada CD a su página de detalle (`proyecto.html?id=...`).
-- **`project.js`**: Es el script de la página de detalle del proyecto. Se encarga de:
-    - Obtener el ID del proyecto de la URL.
-    - Cargar el archivo `manifest.json` para encontrar la información del proyecto correspondiente.
-    - Cargar el archivo JSON específico del proyecto para obtener los detalles (imágenes, descripción, etc.).
-    - Mostrar dinámicamente la información y la galería de imágenes en la página.
-- **`about.js`**: Es el script de la página "Acerca de". Se encarga de:
-    - Cargar el archivo `data/about.json`.
-    - Mostrar el título y el contenido HTML en la página.
+- **El build** (`npm ci && node build/build.mjs`) escribe en `dist/` la home y una página por CD
+  (`/<id>/`) con title, description, og:image (1200×630, **sharp**) y canonical, que antes no
+  tenían, y el contenido ya en el HTML. `proyecto.html?id=` sigue funcionando.
+- **Vista previa**: Live Server sobre la carpeta. Sin `data-built` en `<html>`, `carga.js` revisa
+  los JSON y enseña los errores en pantalla, y los CDs enlazan a `proyecto.html?id=`.
+- **Publicar, una en cada copia**: la nuestra, `.github/workflows/deploy.yml` a GitHub Pages (solo
+  en `meowrhino`; si falla, un issue). La de Mike, Workers Builds (`wrangler.jsonc`).
 
 #### Parámetros ajustables de `main.js`
 

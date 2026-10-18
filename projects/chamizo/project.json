@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "CHAMIZO",
+  "artist": "Daniel",
+  "year": 2025,
+  "description": "La música será nuestra guía: una araña negra traza el hilo que conecta cuerpo, ritmo y delirio. Las extremidades se estiran al límite, entre dark wave, post-punk y techno, como si el suelo fuera escenario y laboratorio a la vez. El rostro se vuelve máscara luminosa, criatura nocturna invocada por el bajo y el sudor. psd",
+  "label": "chamizo_lateral.webp",
+  "cover": "chamizo_cover.webp",
+  "photos": [
+    "chamizo_cover.webp",
+    "chamizo_2.webp",
+    "chamizo_3.webp",
+    "chamizo_4.webp",
+    "chamizo_5.webp",
+    "chamizo_6.webp"
+  ]
+}

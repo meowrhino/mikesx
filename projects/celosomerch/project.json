@@ -1,0 +1,17 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "celoso season merch",
+  "artist": "mikesx",
+  "year": 2026,
+  "description": "celoso incorporated©️ merch winter26 edition. mangos, silenciadores y cuch1llitos para tus batallas emocionales al mejor precio, consulta privada por dm sin compromiso. Acabados impecables. Ergonomía obsesiva. Intenciones cuestionables. Celoso Merchandising™ Hazlo personal               *desde los headquarters de celoso©️ condenamos todo acto de vi0lencia fisica *diseño estático humano, animación ai",
+  "label": "celoso_lateral.webp",
+  "cover": "celoso_cover.webp",
+  "photos": [
+    "celoso_cover.webp",
+    "celoso_2.webp",
+    "celoso_3.webp",
+    "celoso_4.webp",
+    "celoso_5.webp",
+    "celoso_6.webp"
+  ]
+}

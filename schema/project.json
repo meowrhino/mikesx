@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "projects/<nombre>/project.json: un CD",
+  "description": "projects/<nombre>/project.json: un proyecto (un CD). Sus imágenes, en img/ de la misma carpeta, con su nombre. VS Code lee este fichero (por el \"$schema\" de arriba del JSON) para autocompletar, explicar cada campo y subrayar lo que está mal; el build y la vista previa lo usan para revisar.",
+  "type": "object",
+  "required": [
+    "title",
+    "label",
+    "cover"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "_": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string",
+      "description": "El título."
+    },
+    "artist": {
+      "type": "string",
+      "description": "El artista (o lo que va debajo del título)."
+    },
+    "year": {
+      "type": "number",
+      "description": "El año, sin comillas: 2025"
+    },
+    "description": {
+      "type": "string",
+      "description": "El texto. Un salto de línia (\\n) es una línea nueva."
+    },
+    "label": {
+      "type": "string",
+      "pattern": "\\.(webp|png|jpe?g|gif)$",
+      "description": "El lomo del CD en la home, de img/: \"anela_lateral.webp\""
+    },
+    "cover": {
+      "type": "string",
+      "pattern": "\\.(webp|png|jpe?g|gif)$",
+      "description": "La portada, de img/: \"anela_cover.webp\". Sale al compartir."
+    },
+    "photos": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "\\.(webp|png|jpe?g|gif)$",
+        "description": "Una imagen de img/."
+      },
+      "description": "Las imágenes de la galería, en orden."
+    },
+    "instagram": {
+      "type": "string",
+      "pattern": "^https://",
+      "description": "Opcional: un enlace a instagram."
+    },
+    "html": {
+      "type": "string"
+    },
+    "about": {
+      "type": "boolean",
+      "description": "true solo en el CD del about (el de mikesx)."
+    },
+    "email": {
+      "type": "string",
+      "description": "El correo, en el about."
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "celoso",
+  "artist": "mikesx",
+  "year": 2025,
+  "description": "En Celoso, eliges entre cuatro personajes para luchar contra lo irracional. Una batalla con uno mismo, perdida antes de su inicio. La interfaz brilla, el ego tiembla. Rendirse y tirar el escudo nunca ha sido tan duro, ni tan necesario. characters ai + interfaz psd",
+  "label": "celoso_lateral.webp",
+  "cover": "celoso_cover.webp",
+  "photos": [
+    "celoso_2.webp",
+    "celoso_cover.webp",
+    "celoso_3.webp"
+  ]
+}

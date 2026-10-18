@@ -1,0 +1,12 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "carita triste",
+  "artist": "mikesx",
+  "year": 2025,
+  "description": "Alegra esa carita tonto. Ilustración + ai + psd",
+  "label": "carita_lateral.webp",
+  "cover": "carita_cover.webp",
+  "photos": [
+    "carita_cover.webp"
+  ]
+}

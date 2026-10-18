@@ -1,0 +1,16 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "soldado",
+  "artist": "mikesx",
+  "year": 2025,
+  "description": "La figura emerge de una masa de metal líquido, la textura vibra como una cicatriz digital: golpes, pliegues y ruido comprimidos en gris. Soldado es oficio y herida, lucha y pose, masculinidad grabada a fuego en una placa de acero. Un cuerpo en batalla constante con su propia coraza, entre arma y armadura .psd",
+  "label": "soldado_lateral.webp",
+  "cover": "soldado_cover.webp",
+  "photos": [
+    "soldado_cover.webp",
+    "soldado_2.webp",
+    "soldado_3.webp",
+    "soldado_4.webp",
+    "soldado_5.webp"
+  ]
+}

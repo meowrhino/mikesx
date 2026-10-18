@@ -1,0 +1,14 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "777",
+  "artist": "LASKAAR",
+  "year": 2022,
+  "description": "El choque entre lo inocentemente humano y el metal frío de un robot. El juicio y la rigidez del orden matemático frente al caos de las emociones, analógicas y de la carne. Con figuras 3D y reflejos plateados, así se autodescribe Laskaar su último álbum, 777: un encuentro entre control y desborde sensorial .psd",
+  "label": "777_lateral.webp",
+  "cover": "777_cover.webp",
+  "photos": [
+    "777_cover.webp",
+    "777_1.webp",
+    "777_2.webp"
+  ]
+}

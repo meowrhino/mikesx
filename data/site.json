@@ -1,0 +1,30 @@
+{
+  "$schema": "../schema/site.json",
+  "title": "mikesx",
+  "url": "https://mikebros.com",
+  "lists": {
+    "cds": {
+      "projects": [
+        "mikesx",
+        "sexOnTheBeach",
+        "anela",
+        "soldado",
+        "mejorqueyo",
+        "caritatriste",
+        "abrazodeguerra",
+        "celosomerch",
+        "asfaltodeverano",
+        "todaLaNoche",
+        "chamizo",
+        "furyduty",
+        "gasolina",
+        "bb",
+        "celoso",
+        "virtualDiva",
+        "777",
+        "manners",
+        "munyekeo"
+      ]
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "$schema": "../../schema/project.json",
+  "title": "virtual diva",
+  "artist": "logo, symbol & merch",
+  "year": 2024,
+  "description": "˚ ༘♡ ⋆｡˚.ೃ࿐ Logo (image and text) for VIRTUAL DIVA @carlotipupu Online brand visuals and merch ੈ✩‧₊˚ೄྀ࿐ ˊˎ- ill + psd",
+  "label": "virtualDiva_lateral.webp",
+  "cover": "virtualDiva_cover.webp",
+  "photos": [
+    "virtualDiva_cover.webp",
+    "virtualDiva_2.webp",
+    "virtualDiva_3.webp",
+    "virtualDiva_4.webp",
+    "virtualDiva_5.webp",
+    "virtualDiva_6.webp",
+    "virtualDiva_7.webp"
+  ]
+}
