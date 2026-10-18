@@ -150,7 +150,7 @@ const notFound = () => `<!doctype html>
 
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT, { recursive: true });
-for (const f of ['styles.css', 'fonts', 'js', 'main.js', 'project.js', 'data', 'projects']) cpSync(at(f), join(OUT, f), { recursive: true, filter: (x) => !x.endsWith('.DS_Store') });
+for (const f of ['styles.css', 'css', 'fonts', 'js', 'main.js', 'project.js', 'data', 'projects']) cpSync(at(f), join(OUT, f), { recursive: true, filter: (x) => !x.endsWith('.DS_Store') });
 // proyecto.html?id= sigue valiendo (enlaces viejos), ya construida
 writeFileSync(join(OUT, 'proyecto.html'), readFileSync(at('proyecto.html'), 'utf8').replace(/<html lang="([^"]*)">/, '<html lang="$1" data-built>'));
 writeFileSync(join(OUT, 'index.html'), homePage());

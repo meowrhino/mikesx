@@ -3,11 +3,30 @@
 
 <head>
   <meta charset="utf-8" />
+    <!-- la transicion de la casa (JAMstack, patrones §6c; js/transicion.js): tapada
+         antes de pintar si se llega de otra pagina de la web -->
+    <script>{
+    const html = document.documentElement;
+    html.classList.add('js');
+    let back = false;
+    try {
+      const d = JSON.parse(sessionStorage.getItem('transicion'));
+      back = !d && performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
+      if (d?.carga) html.style.setProperty('--carga', d.carga);
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches && (back || d)) html.classList.add('tapada');
+    } catch {}
+    window.revelada = 'onpagereveal' in window ? new Promise((done) => addEventListener('pagereveal', (e) => {
+      const vt = e.viewTransition;
+      if (vt && back && html.classList.contains('tapada')) { html.classList.add('tapando'); done(vt); }
+      else { vt?.ready.catch(() => {}); vt?.skipTransition(); done(null); }   // saltarla rechaza ready: sin error en la consola
+    }, { once: true })) : Promise.resolve(null);
+    }</script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Proyecto</title>
   <link rel="icon" href="data/icon/favicon.ico" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="32x32" href="data/icon/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="data/icon/favicon-16x16.png">
+  <link rel="stylesheet" href="css/transicion.css">
   <link rel="stylesheet" href="fonts/fonts.css" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -38,6 +57,7 @@
     </section>
   </main>
   <script type="module" src="project.js"></script>
+  <script src="js/transicion.js" defer></script>
 </body>
 
 </html>
