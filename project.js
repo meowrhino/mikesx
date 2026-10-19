@@ -13,7 +13,7 @@ async function init() {
 
   if (!item) {
     // Si no se encuentra, redirigir a la home
-    window.location.href = 'index.html';
+    window.location.href = './';
     return;
   }
   
